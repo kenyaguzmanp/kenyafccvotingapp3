@@ -1,7 +1,7 @@
 (function() {
     //building our module
     var app = angular.module('app', ['ngRoute', 'angular-jwt']);
-
+/*
     app.run(function($http, $rootScope, $location, $window){
 
         $http.defaults.headers.common['Authorization'] = 'Bearer ' + $window.localStorage.token;
@@ -22,7 +22,7 @@
             }
         });
     });
-
+*/
     app.config(function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
 
@@ -88,7 +88,7 @@
     //controllers
     app.controller('MainController', MainController);
 
-    function MainController($location, $window, $http, NgTableParams, jwtHelper){
+    function MainController($location, $window, $http, jwtHelper){
         var vm = this;
         vm.title = "MainController";
     }
