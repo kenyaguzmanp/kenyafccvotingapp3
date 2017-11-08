@@ -1,3 +1,14 @@
 <customnavbar></customnavbar>
-<h1>Hola {{vm.title}}</h1>
+<h1>{{vm.title}}</h1>
+<hr>
+<h4 ng-if="vm.error">{{vm.error}}</h4>
+<br>
+<div class="container center-block">
+    <input type="text" ng-model="vm.user.name" class="form-control" placeholder="Name">
+    <br>
+    <input type="password" ng-model="vm.user.password" class="form-control" placeholder="Password">
+    <br>
+    <button class="btn btn-success" ng-click="vm.register()" ng-disabled="!vm.user.name || !vm.user.password">Register</button>
+</div>
+
 

@@ -100,35 +100,57 @@
 
     function MainController($location, $window, $http, jwtHelper){
         var vm = this;
-        vm.title = "MainController";
+        vm.title = "Main";
     }
 
     app.controller('LoginController', LoginController);
 
     function LoginController($location, $window, $http){
         var vm = this;
-        vm.title = "LoginController";
+        vm.title = "Login";
     }
 
     app.controller('RegisterController', RegisterController);
 
     function RegisterController($location, $window, $http, $scope){
         var vm = this;
-        vm.title = "RegisterController";
+        vm.title = "Register";
+        vm.error= '';
+
+        vm.register = function(){
+            if(!vm.user){
+                console.log("invalid user");
+                return;
+            }
+            $http.post('/api/register', vm.user)
+                 .then(function(response){
+                     //storage on client side
+                     $window.localStorage.token = response.data;
+                     //redirect
+                     $location.path('/profile');
+                 }, function(err){
+                     //vm.error = err.data.errmsg;
+                     vm.error = "Sorry, this name is already taken";
+                     console.log("error: ", err); 
+                 });
+                   
+        }
+
+
     }
 
     app.controller('ProfileController', ProfileController);
 
     function ProfileController($location, $window, jwtHelper){
         var vm = this;
-        vm.title = "ProfileController";
+        vm.title = "Profile";
     }
 
     app.controller('PollsController', PollsController);
 
     function PollsController($location, $window, $http, jwtHelper, $scope){
         var vm = this;
-        vm.title = "PollsController";
+        vm.title = "Polls";
         
 
     }//fin del controlador de polls
@@ -137,7 +159,7 @@
 
     function PollController($location, $window, $http, jwtHelper, $scope){
         var vm = this;
-        vm.title = "PollController";
+        vm.title = "Poll";
 
     }
 
