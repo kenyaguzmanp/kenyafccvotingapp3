@@ -23,6 +23,41 @@
         });
     });
 */
+
+    app.directive('customnavbar', function() {
+        //define the directive object
+        var directive = {};
+        
+        //restrict = E, signifies that directive is Element directive
+        directive.restrict = 'E';
+        
+        //template replaces the complete element with its text. 
+        directive.template = "Student: <b>{{student.name}}</b> , Roll No: <b>{{student.rollno}}</b>";
+        
+        //scope is used to distinguish each student element based on criteria.
+        directive.scope = {
+        student : "=name"
+        }
+        
+        //compile is called during application initialization. AngularJS calls it once when html page is loaded.
+        
+        directive.compile = function(element, attributes) {
+       // element.css("border", "1px solid red");
+        
+        //linkFunction is linked with each element with scope to get the element specific data.
+        var linkFunction = function($scope, element, attributes) {
+            element.html('<nav class="navbar navbar-default"><div class="container-fluid"><div class="navbar-header"><a class="navbar-brand" href="#">VoteMyPoll</a> </div> <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav"><li><a href="/">Home</a></li><li><a href="/polls">Polls</a></li></ul></div></div></nav>');
+
+        //'<nav class="navbar navbar-default"><div class="container-fluid"><div class="navbar-header"><a class="navbar-brand" href="#">VoteMyPoll</a> </div> <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"><ul class="nav navbar-nav"><li><a href="/">Home</a></li></ul></div></div></nav>'
+
+
+            //element.css("background-color", "yellow");
+        }
+        return linkFunction;
+        }
+        return directive;
+    });
+
     app.config(function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
 
@@ -102,7 +137,7 @@
 
     app.controller('RegisterController', RegisterController);
 
-    function RegisterController($location, $window, $http){
+    function RegisterController($location, $window, $http, $scope){
         var vm = this;
         vm.title = "RegisterController";
     }
