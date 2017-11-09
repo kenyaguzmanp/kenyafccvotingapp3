@@ -1,1 +1,38 @@
-<h1>Hola {{vm.title}}</h1>
+<customnavbar></customnavbar>
+<h1>{{vm.title}} from {{vm.userName}}</h1>
+
+<div>
+        <input type="text" ng-model="vm.poll.name" placeholder="Name of poll..."  class="form-control" style="padding: 10px;">
+        <hr>
+        <input type="text" ng-model="vm.poll.options[$index].name" ng-repeat="option in vm.poll.options" placeholder="Option name" class="form-control" style="padding: 10px;">
+        <hr>
+        <ul>
+            <li ng-repeat="option in vm.poll.options"> 
+               {{vm.poll.options[$index].name}}  
+            </li>
+       </ul>
+        <hr>
+        <button ng-click="vm.addOption()" class="btn btn-primary">Add Option</button>
+        <br><br>
+        <button ng-click="vm.addPoll()" ng-disabled="!vm.poll.name" class="btn btn-primary">Add Poll</button>
+</div>
+    
+    
+    <h3>All your Polls:</h3>
+    <div class="row" ng-model="vm.polls">
+        <div class="col-md-8">
+            <ul>
+                 <li ng-repeat="poll in vm.polls"> 
+                    <button ng-click="vm.goToThisPoll(poll)" class="btn btn-primary">{{poll.name}}</button>
+                    <a target="_blank">localhost:8000/polls/{{poll._id}}</a>       
+                 </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <ul>
+                <li ng-repeat="poll in vm.polls"> 
+                    <button ng-click="vm.goToThisPoll(poll)" class="btn btn-primary"> Go </button> <span> <button ng-click="vm.deleteThisPoll(poll)" class="btn btn-danger">Delete </button> </span>  
+                </li>
+            </ul>
+        </div>
+    </div>

@@ -4,9 +4,8 @@ var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
 var User = require('../models/user');
-/*
 var Poll = require('../models/polls');
-*/
+
 
 //Get all the polls in general
 router.get('/', function(request, response){
@@ -71,6 +70,67 @@ router.post('/verify', function(request, response){
          return response.status(400).send('Please enter valid credentials');
      }
  });
+
+//Get all the polls
+router.get('/polls', authenticate, function(request, response){
+    console.log("ENTRO A POLLS");
+    var pollsToSend =[];
+    var pollsUser=[];
+    if(response.req.headers.authorization){
+        console.log("autorizado");
+    }
+
+    Poll.find({}, function(err, polls){
+        if(err){
+            return response.status(400).send(err)
+        }
+        if(polls.length < 1){
+            return response.status(400).send('No polls added yet')
+        }
+        pollsToSend = polls;
+        return response.status(200).send(polls)
+    }) 
+});
+
+//CReate a new poll
+router.post('/polls', authenticate, function(request, response){
+    console.log("ENTRO A CREAR NEW POLL");
+    //console.log("el request body de create a new poll ", request.body);
+    if(!request.body.options || !request.body.name){
+        return response.status(400).send('No poll data supplied');
+    }
+    if(!request.body.toDelete){
+        var poll = new Poll();
+        poll.name = request.body.name;
+        poll.options = request.body.options;
+     //var token = request.headers.authorization.split(' ')[1];
+     //console.log("el supuesto token: " , request.headers.authorization.split(' ')[1] );
+       // poll.user = request.body._id;
+        poll.user = request.body.user;
+       console.log("se creo el poll con este uduario id: " , request.body);
+
+        poll.save(function(err, res){
+            if(err){
+                return response.status(400).send(err)
+            }
+            return response.status(201).send(res)
+        });
+    }else{
+        console.log("se borrara");
+        var pollToDeleteId = request.body._id;
+       // console.log("el id del que quieres borrar es: " + pollToDeleteId);
+        Poll.remove({ _id: pollToDeleteId}, function(err, pol){
+            console.log("BORRANDO DE LA BD");
+            if(err){
+                return response.status(400).send(err)
+            }
+            return response.status(200).send(pol);
+        })
+    }
+    
+});
+
+
 
  //Authentication middleware
 function authenticate(request, response, next){
