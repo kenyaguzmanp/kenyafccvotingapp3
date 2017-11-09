@@ -3,14 +3,8 @@
 
 <div>
         <input type="text" ng-model="vm.poll.name" placeholder="Name of poll..."  class="form-control" style="padding: 10px;">
-        <hr>
+        <br>
         <input type="text" ng-model="vm.poll.options[$index].name" ng-repeat="option in vm.poll.options" placeholder="Option name" class="form-control" style="padding: 10px;">
-        <hr>
-        <ul>
-            <li ng-repeat="option in vm.poll.options"> 
-               {{vm.poll.options[$index].name}}  
-            </li>
-       </ul>
         <hr>
         <button ng-click="vm.addOption()" class="btn btn-primary">Add Option</button>
         <br><br>
