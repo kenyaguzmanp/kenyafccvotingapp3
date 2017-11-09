@@ -9,7 +9,42 @@ var Poll = require('../models/polls');
 
 //Get all the polls in general
 router.get('/', function(request, response){
-    console.log("ENTRO A index");       
+    console.log("ENTRO A index");
+    var allPolls =[];
+    var allUsers = [];
+    var allData={};
+
+
+    Poll.find({}, function(err, polls){
+        if(err){
+            return response.status(400).send(err)
+        }
+        if(polls.length < 1){
+            return response.status(400).send('No polls added yet')
+        }
+        allPolls = polls;
+        console.log("el poll en todo index: ", allPolls.length);
+        //return response.status(200).send(allPolls)
+        allData.polls = allPolls;        
+    })
+   
+    User.find({}, function(err, users){
+        if(err){
+            return response.status(400).send(err)
+        }
+        if(users.length < 1){
+            return response.status(400).send('No polls added yet')
+        }
+        allUsers = users;
+        console.log("todos los usuarios en todo index: ", allUsers.length);
+        allData.users = allUsers;
+        //console.log("all data: ", allData);
+        return response.status(200).send(allData)
+    })
+
+    
+    
+       
 });
 
 router.post('/register', function(request, response){

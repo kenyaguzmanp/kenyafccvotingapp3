@@ -3,3 +3,17 @@
 <div>
     <img src="https://www.poll-maker.com/3012/images/improve-engagement-big.png" alt="quote">
 </div>
+
+<h1>Wellcome to VoteMyPoll!</h1>
+<h3>An Application where you can view, create and vote any poll you want</h3>
+<h3 ng-show="poll.length === 0">Sign in to see all the polls!</h3>
+<hr>
+
+<table ng-table="vm.tableParams" class="table" show-filter="true">
+  <tr ng-repeat="poll in $data">
+      <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+          <a ng-click="vm.goToThisPoll(poll)" target="_blank"> {{poll.name}}</a></td>
+      <td title="'User'" filter="{ userName: 'text'}" sortable="'userName'">
+          {{poll.userName }}</td>
+  </tr>
+</table>

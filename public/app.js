@@ -1,6 +1,6 @@
 (function() {
     //building our module
-    var app = angular.module('app', ['ngRoute', 'angular-jwt']);
+    var app = angular.module('app', ['ngRoute', 'angular-jwt','ngTable', '720kb.socialshare']);
 
     app.run(function($http, $rootScope, $location, $window){
 
@@ -131,9 +131,79 @@
     //controllers
     app.controller('MainController', MainController);
 
-    function MainController($location, $window, $http, jwtHelper){
+    function MainController($location, $window, $http, NgTableParams, jwtHelper){
         var vm = this;
         vm.title = "Main";
+        vm.polls = [];
+        console.log('in main controller');
+        vm.poll = {
+            options: [],
+            name: '',
+            userid: '',
+            userName:''
+
+        };
+        vm.poll.options = [{
+            name: '',
+            votes: 0
+        }];
+        vm.tableData={};
+        vm.pollsToTable=[];
+        var pollToTable={
+            idPoll: '',
+            name: '',
+            userid: '',
+            userName: ''
+        }
+        
+        vm.getAllPolls = function(){
+            polls =[];
+            $http.get('/api')
+            .then(function(response){
+                var dat = response.data;
+                console.log("dat ", dat[0]);
+                
+                vm.polls = dat.polls;
+                vm.users = dat.users;
+
+                
+                vm.tableData.polls = vm.polls;
+                vm.tableData.users = vm.users;
+                var pollTable=[];
+                pollTable = vm.polls;
+                //pollTable[0].userName = 'Bruno';
+                    
+                for(var d=0; d< vm.polls.length; d++){
+                    //console.log("poll ", vm.polls[d].name);
+                    for(var t=0; t< vm.users.length; t++){
+                        //console.log("usuario: " + vm.users[t].name);
+                        if(vm.users[t]._id === vm.polls[d].user){
+                            //console.log("el ususario: " + vm.users[t].name + "tiene el poll " + vm.polls[d].name + "en el indice: "+ d);
+                            pollTable[d].userName = vm.users[t].name;
+                                
+                        }
+                       
+                    }
+                }
+
+                //console.log("vm.pollsTable ", pollTable);
+                
+                vm.tableParams = new NgTableParams({}, { dataset: pollTable});
+                //console.log("vm.tableParams ", vm.tableParams);                
+            }, function(err){
+                console.log("error en el get");
+                console.log(err);
+            })   
+        }
+                vm.getAllPolls()
+        
+        vm.goToThisPoll = function(thisPoll){             
+            console.log("the poll you selected: " , thisPoll);
+            var id = thisPoll._id;
+            console.log("id " + id);
+            vm.selectedPoll = thisPoll;
+            $location.path("/polls/" + id);                      
+        }
     }
 
     app.controller('LoginController', LoginController);
