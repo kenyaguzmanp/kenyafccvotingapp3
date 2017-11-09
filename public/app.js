@@ -29,14 +29,40 @@
             restrict: 'E',
             transclude: true,
             scope: {},            
-            templateUrl: './templates/customnavbar.html',            
+            templateUrl: './templates/customnavbar.html',
+            controller: ['$scope', '$window', '$location', function CustomnavbarController($scope, $window, $location) {
+                var vm = this;
+                console.log("inside the customnavbar controller");
+                console.log("ocal storage ", $location.path());
+
+                vm.profileButtons = true;
+                
+                vm.ex = "example";
+                $scope.logout = function (){
+                    console.log("has dado click en logout");
+                    delete $window.localStorage.token;
+                    $location.path('/login');
+                }
+
+              }]
+            
+            /*            
             link: function($scope, element, attrs) {
                 $scope.logout= function() {
                     console.log('inside click logout');
                     delete $window.localStorage.token;
                     $location.path('/login');
                 }
-            }
+            }*/
+          };
+    });
+
+    app.directive('customnavbar2', function($location, $window) {
+        return {
+            restrict: 'E',
+            transclude: true,
+            scope: {},            
+            templateUrl: './templates/customnavbar2.html'
           };
     });
 
