@@ -1,7 +1,7 @@
 (function() {
     //building our module
     var app = angular.module('app', ['ngRoute', 'angular-jwt']);
-/*
+
     app.run(function($http, $rootScope, $location, $window){
 
         $http.defaults.headers.common['Authorization'] = 'Bearer ' + $window.localStorage.token;
@@ -22,14 +22,21 @@
             }
         });
     });
-*/
 
-    app.directive('customnavbar', function() {
+
+    app.directive('customnavbar', function($location, $window) {
         return {
             restrict: 'E',
             transclude: true,
-            scope: {},
-            templateUrl: './templates/customnavbar.html'
+            scope: {},            
+            templateUrl: './templates/customnavbar.html',            
+            link: function($scope, element, attrs) {
+                $scope.logout= function() {
+                    console.log('inside click logout');
+                    delete $window.localStorage.token;
+                    $location.path('/login');
+                }
+            }
           };
     });
 
@@ -108,6 +115,21 @@
     function LoginController($location, $window, $http){
         var vm = this;
         vm.title = "Login";
+        vm.error = '';
+        vm.login = function(){
+            if(vm.user){
+               $http.post('/api/login', vm.user)
+                    .then(function(response){
+                        $window.localStorage.token = response.data;
+                        $location.path('/profile');
+                        $http.defaults.headers.common['Authorization'] = 'Bearer ' + $window.localStorage.token;
+                    }, function(err){
+                        vm.error = err;
+                    }) 
+            }else{
+                console.log('no credential suppield');
+            }
+        }
     }
 
     app.controller('RegisterController', RegisterController);
@@ -144,6 +166,26 @@
     function ProfileController($location, $window, jwtHelper){
         var vm = this;
         vm.title = "Profile";
+        console.log("en controller de profile");
+
+        vm.user = null;
+        var token = $window.localStorage.token;
+        var payload = jwtHelper.decodeToken(token).data;
+        if(payload){
+            vm.user = payload;
+        }
+        
+        vm.logOut = function(){
+            console.log("logout");
+            delete $window.localStorage.token;
+            vm.user = null;
+            $location.path('/login');
+        }
+        
+        vm.myPolls = function(){
+            console.log('Dentro de ProfileController.vm.myPolls')
+            $location.path('/polls');
+        }
     }
 
     app.controller('PollsController', PollsController);
