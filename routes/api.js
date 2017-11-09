@@ -131,6 +131,71 @@ router.post('/polls', authenticate, function(request, response){
 });
 
 
+router.post('/polls/:id', function(request, response){
+    console.log("EN POST DEL POLL ESPECIFICO");
+    //console.log("RESPONSE EN EL POST:  ", response.req.headers.authorization);
+    //console.log("TOKEN: ", request.body);
+    var pollToUpdateId = request.body._id;
+    var optionsToUpdate = request.body.options;
+    console.log("poll id to be updated", pollToUpdateId);
+    console.log("options to be updated: ", optionsToUpdate);
+    
+    Poll.update({ _id: pollToUpdateId},{ $set: {options : optionsToUpdate}}, function(err, response){
+        console.log("actualizando en bd");
+        if(err){
+            return response.status(400).send(err)
+        }
+        console.log("response en actualizacion de bd ", response);
+    }) 
+    
+
+});
+
+
+
+router.get('/polls/:id', function(request, response){
+    var polToSend={};
+    console.log("ENTRO A POLL");
+    //console.log("request del poll en get REMOTE ADDRESS", request.connection.remoteAddress);
+    var idPoll = request.params.id;
+    var idUser = "";
+    var completePoll = {};
+    //console.log("request del parametro ID en Poll " , idPoll);
+
+    Poll.find({ _id: idPoll}, function(err, pol){
+        console.log("buscando en la BD");
+        if(err){
+            return response.status(400).send(err)
+        }
+        console.log("el pol enviado: ", pol);
+        polToSend = pol[0];
+        console.log("el polToSend es " , polToSend);
+        idUser = polToSend.user;
+        console.log("el id del usuario es: " + idUser);
+        //return response.status(200).send(pol);
+        User.find({ _id: idUser}, function(err, user){
+            console.log("buscando en la BD");
+            if(err){
+                return response.status(400).send(err)
+            }
+            polToSend.userName = user[0].name;
+            //completePoll =  user[0].name;
+            completePoll =[{
+                "userName": user[0].name,
+                "_id": polToSend._id,
+                "user": polToSend.user,
+                "options": polToSend.options,
+                "name": polToSend.name
+            }];
+            console.log("el user enviado: " + polToSend.userName);
+            console.log("el polCOmplete" , completePoll);
+            return response.status(200).send(completePoll);
+        })
+    })
+
+});
+
+
 
  //Authentication middleware
 function authenticate(request, response, next){

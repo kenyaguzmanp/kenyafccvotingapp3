@@ -1,1 +1,63 @@
-<h1>Hola {{vm.title}}</h1>
+<customnavbar></customnavbar>
+<h1>{{vm.title}}</h1>
+
+<h3>{{vm.thisPollIs.name}}</h3>
+<!--
+<ul>
+    <li ng-repeat="option in vm.thisPollIs.options">{{option.name}} --- {{option.votes}}
+    </li>
+</ul> -->
+
+<div class="row">
+    <div class="col-md-4">
+       
+        <select class="form-control input-lg" ng-model="selectedOption">
+            <option ng-repeat="option in vm.thisPollIs.options">{{option.name}}</option>
+        </select>
+        <br>
+        <input type="text" ng-show="vm.otherOps" ng-model="newOption.name" placeholder="Option name" class="form-control" style="padding: 10px;"> 
+        <button ng-click="vm.voteForThis()" ng-disabled="vm.voted || !(selectedOption)" class="btn btn-primary">Vote</button>
+        <button ng-click="vm.addOptionToThisPoll(newOption.name)" ng-show="vm.otherOps"  ng-disabled="!newOption.name" class="btn btn-primary">Add Option</button>
+        <button ng-click="vm.addOtherOptions()" ng-hide="vm.otherOps" class="btn btn-primary">More Options</button>
+        <br>
+        <br>
+        <a href="#"
+        socialshare
+        socialshare-provider="twitter"
+        socialshare-text={{vm.shareText}}
+        socialshare-hashtags="angularjs, polls, freecodecamp"
+        socialshare-url="http://720kb.net">
+        <i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i>
+        </a>
+        <a href="#"
+        socialshare
+        socialshare-provider="facebook"
+        socialshare-text={{vm.shareText}}
+        socialshare-hashtags="angularjs, polls, freecodecamp"
+        socialshare-url="http://720kb.net">
+        <i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i>
+        </a>
+        <a href="#"
+        socialshare
+        socialshare-provider="linkedin"
+        socialshare-text={{vm.shareText}}
+        socialshare-hashtags="angularjs, polls, freecodecamp"
+        socialshare-url="http://720kb.net">
+        <i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
+        </a>
+        <br>
+        <br>
+        <h4><a ng-click="vm.myPolls()">Poll made by: {{vm.thisPollIs.userName}}</a></h4>
+    </div>
+    <div class="col-md-8">
+        <!--
+        <ul>
+            <li ng-repeat="option in vm.thisPollIs.options">{{option.votes}}</li>
+        </ul>
+    -->
+        <!--<button ng-click="vm.showTheChart()" class="btn btn-primary">Show the Chart</button>-->
+        <div id="piechart" style="width: 900px; height: 500px;"></div> 
+        <!--<div chart1></div> -->
+    </div>
+   
+</div>
