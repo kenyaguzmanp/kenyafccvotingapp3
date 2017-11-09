@@ -21,11 +21,15 @@ var app= express();
 dotenv.config({ verbose: true});
 
 //conect to mongo
+/*
 mongoose.connect(db, function(err){
     if(err){
         console.log(err);
     }
 });
+*/
+
+mongoose.connect(process.env.MONGODB_URI);
 
 //listen to mongoose connection events
 mongoose.connection.on('connected', function(){
