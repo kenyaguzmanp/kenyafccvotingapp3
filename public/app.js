@@ -423,14 +423,8 @@
         vm.voted = false;
         vm.otherOps = false;
         //console.log("usuario: ", vm.userName);
-
-        $scope.updateLink = function(){
-            console.log("click en twitter");
-            
-            document.getElementById("twitter").setAttribute("socialshare-url", "https://kenyafccvotingapp-kenyaguzmanp.c9users.io/polls/"+ vm.thisPollIs._id);
-            document.getElementById("facebookLink").setAttribute("socialshare-url", "https://kenyafccvotingapp-kenyaguzmanp.c9users.io/polls/"+ vm.thisPollIs._id);
-            //console.log("esto: ", document.getElementById("twitter"));
-        }
+        
+        
 
         console.log("Entro al controlador del POll");
         console.log("vm.thisPollId " + vm.thisPollId);
@@ -441,7 +435,8 @@
                 console.log("response del poll en general ", response);
                 console.log("data del poll: ", response.data[0]);
                 vm.thisPollIs = response.data[0];
-                vm.shareText = "Check out my new poll: '" + vm.thisPollIs.name + "' in https://kenyafccvotingapp-kenyaguzmanp.c9users.io/polls/" + vm.thisPollIs._id ;
+                vm.shareText = "Check out my new poll: '" + vm.thisPollIs.name + "'";
+                $scope.url = 'https://kenyafccvotingapp-kenyaguzmanp.c9users.io/polls/'+ vm.thisPollIs._id;
                 console.log("usuario en el get del poll " , vm.thisPollIs.user);
                 vm.showTheChart();
             }, function(err){
