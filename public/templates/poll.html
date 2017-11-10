@@ -21,28 +21,28 @@
         <button ng-click="vm.addOtherOptions()" ng-hide="vm.otherOps" class="btn btn-primary">More Options</button>
         <br>
         <br>
-        <a href="#"
+        <a href="#" ng-click="updateLink()" id="twitter"
         socialshare
         socialshare-provider="twitter"
         socialshare-text={{vm.shareText}}
         socialshare-hashtags="angularjs, polls, freecodecamp"
-        socialshare-url="http://720kb.net">
+        socialshare-url="shareLink">
         <i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i>
         </a>
-        <a href="#"
+        <a href="#" ng-click="updateLink()" id="facebookLink"
         socialshare
         socialshare-provider="facebook"
         socialshare-text={{vm.shareText}}
         socialshare-hashtags="angularjs, polls, freecodecamp"
-        socialshare-url="http://720kb.net">
+        socialshare-url="shareLink">
         <i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i>
         </a>
-        <a href="#"
+        <a href="#" ng-click="updateLink()" id="linkedinLink"
         socialshare
         socialshare-provider="linkedin"
         socialshare-text={{vm.shareText}}
         socialshare-hashtags="angularjs, polls, freecodecamp"
-        socialshare-url="http://720kb.net">
+        socialshare-url="shareLink">
         <i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
         </a>
         <br>

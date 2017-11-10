@@ -25,9 +25,25 @@ router.get('/', function(request, response){
         allPolls = polls;
         console.log("el poll en todo index: ", allPolls.length);
         //return response.status(200).send(allPolls)
-        allData.polls = allPolls;        
+        allData.polls = allPolls;
+        
+        User.find({}, function(err, users){
+            if(err){
+                return response.status(400).send(err)
+            }
+            if(users.length < 1){
+                return response.status(400).send('No polls added yet')
+            }
+            allUsers = users;
+            console.log("todos los usuarios en todo index: ", allUsers.length);
+            allData.users = allUsers;
+            //console.log("all data: ", allData);
+            return response.status(200).send(allData)
+        })
+        
     })
    
+    /*
     User.find({}, function(err, users){
         if(err){
             return response.status(400).send(err)
@@ -40,7 +56,7 @@ router.get('/', function(request, response){
         allData.users = allUsers;
         //console.log("all data: ", allData);
         return response.status(200).send(allData)
-    })
+    }) */
 
     
     
