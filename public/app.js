@@ -403,7 +403,8 @@
                     
                    //vm.getAllPolls()
     
-                }
+                }  
+
             }
         }//fin de si es usuario
         else{
@@ -423,7 +424,6 @@
         vm.voted = false;
         vm.otherOps = false;
         //console.log("usuario: ", vm.userName);
-        
         
 
         console.log("Entro al controlador del POll");

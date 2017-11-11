@@ -2,26 +2,44 @@
 <h1>{{vm.title}} from {{vm.userName}}</h1>
 
 <div>
-        <input type="text" ng-model="vm.poll.name" placeholder="Name of poll..."  class="form-control" style="padding: 10px;">
-        <br>
-        <input type="text" ng-model="vm.poll.options[$index].name" ng-repeat="option in vm.poll.options" placeholder="Option name" class="form-control" style="padding: 10px;">
-        <hr>
-        <button ng-click="vm.addOption()" class="btn btn-primary">Add Option</button>
-        <br><br>
-        <button ng-click="vm.addPoll()" ng-disabled="!vm.poll.name" class="btn btn-primary">Add Poll</button>
+    <label>New Poll's Name</label>
+    <input type="text" ng-model="vm.poll.name" placeholder="Name of poll..."  class="form-control" style="padding: 10px;">
+    <br>
+    <label>New Poll's Options</label>
+    <input type="text" ng-model="vm.poll.options[$index].name" ng-repeat="option in vm.poll.options" placeholder="Option name" class="form-control" style="padding: 10px;">
+    <hr>
+    <button ng-click="vm.addOption()" class="btn btn-primary">Add Option</button>
+    <br><br>
+    <button ng-click="vm.addPoll()" ng-disabled="!vm.poll.name" class="btn btn-primary">Add Poll</button>
 </div>
     
     
     <h3>All your Polls:</h3>
     <div class="row" ng-model="vm.polls">
-        <div class="col-md-8">
-            <ul>
+        <div class="center-block">
+            <ul class="center-block">
                  <li ng-repeat="poll in vm.polls"> 
                     <button ng-click="vm.goToThisPoll(poll)" class="btn btn-primary">{{poll.name}}</button>
-                    <a target="_blank">localhost:8000/polls/{{poll._id}}</a>       
+                    <span><a href="#" id=pollToConfig{{$index}} ng-click="showConfigOfPoll = ! showConfigOfPoll"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a></span>
+                    <div ng-show="showConfigOfPoll" class="pollConfig" id=pollConfig{{$index}}>
+                        <ul>
+                            <li>
+                                <a target="_blank">https://kenyafccvotingapp-kenyaguzmanp.c9users.io/polls/{{poll._id}}</a> 
+                            </li>
+                            <li>
+                                <button ng-click="vm.goToThisPoll(poll)" class="btn btn-primary"> Go </button>
+                            </li>                          
+                            <li>
+                                <button ng-click="vm.deleteThisPoll(poll)" class="btn btn-danger">Delete </button>
+                            </li>
+                        </ul>
+                    </div>
+                          
                  </li>
             </ul>
         </div>
+        <br>
+        <!--
         <div class="col-md-4">
             <ul>
                 <li ng-repeat="poll in vm.polls"> 
@@ -29,4 +47,5 @@
                 </li>
             </ul>
         </div>
+    -->
     </div>
