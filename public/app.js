@@ -1,6 +1,6 @@
 (function() {
     //building our module
-    var app = angular.module('app', ['ngRoute', 'angular-jwt','ngTable', '720kb.socialshare']);
+    var app = angular.module('app', ['ngRoute', 'angular-jwt','ngTable', '720kb.socialshare', 'angularCSS']);
 
     app.run(function($http, $rootScope, $location, $window){
 
@@ -66,6 +66,16 @@
           };
     });
 
+    app.directive('loginregisterdiv', function($location, $window) {
+        return {
+            restrict: 'E',
+            transclude: true,
+            scope: {},            
+            templateUrl: './templates/loginregisterdiv.html',
+            css: './stylesheets/mainstyle.css'
+          };
+    });
+
     app.config(function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
 
@@ -73,6 +83,7 @@
         $routeProvider.when('/', {
             templateUrl: './templates/main.html',
             controller: 'MainController',
+            css: './stylesheets/mainstyle.css',
             controllerAs: 'vm',
             access: {
                 restricted: false

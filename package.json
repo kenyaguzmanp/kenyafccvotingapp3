@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.6.6",
+    "angular-css": "^1.0.8",
     "angular-jwt": "^0.1.9",
     "angular-socialshare": "^2.3.11",
     "bcrypt-nodejs": "0.0.3",
