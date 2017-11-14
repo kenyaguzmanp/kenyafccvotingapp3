@@ -409,7 +409,7 @@
             .then(function(response){
                 vm.thisPollIs = response.data[0];
                 vm.shareText = "Check out my new poll: '" + vm.thisPollIs.name + "'";
-                $scope.url = 'https://kenyafccvotingapp-kenyaguzmanp.c9users.io/polls/'+ vm.thisPollIs._id;
+                $scope.url = 'https://kenyafccvotingapp2.herokuapp.com/polls/'+ vm.thisPollIs._id;
                 vm.showTheChart();
             }, function(err){
                 console.log(err);

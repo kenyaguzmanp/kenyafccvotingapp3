@@ -1,8 +1,8 @@
 //create db connection string
-var db='mongodb://127.0.0.1/fccvotingapp';
+var db = process.env.MONGODB_URI;
 
 //create a port for the server to listen on
-var port =  process.env.PORT || 8000;
+var port =  process.env.PORT;
 
 //load router
 var router = require('./routes/api');
@@ -30,6 +30,7 @@ mongoose.connect(db, function(err){
 */
 
 mongoose.connect(process.env.MONGODB_URI);
+mongoose.Promise = global.Promise;
 
 //listen to mongoose connection events
 mongoose.connection.on('connected', function(){
