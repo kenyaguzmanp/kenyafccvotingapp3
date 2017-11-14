@@ -83,7 +83,6 @@
         $routeProvider.when('/', {
             templateUrl: './templates/main.html',
             controller: 'MainController',
-            css: './stylesheets/mainstyle.css',
             controllerAs: 'vm',
             access: {
                 restricted: false

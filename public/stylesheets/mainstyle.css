@@ -1,4 +1,17 @@
 .loginregisterWrapp{
     background-color: #f8c82c;
     padding: 30px;
+    text-align: center;
+}
+
+h3{
+    font-size: 56px;
+    margin-bottom: 34px;
+}
+
+#btnLogin{
+    background-image: linear-gradient(#87c8c7, #46aeae 6%, #46aeae);
+}
+#btnLogOut{
+    background-image: linear-gradient(#e23b59, #e23b59 6%, #be314c);
 }
