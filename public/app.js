@@ -32,28 +32,16 @@
             templateUrl: './templates/customnavbar.html',
             controller: ['$scope', '$window', '$location', function CustomnavbarController($scope, $window, $location) {
                 var vm = this;
-                console.log("inside the customnavbar controller");
-                console.log("ocal storage ", $location.path());
 
                 vm.profileButtons = true;
                 
-                vm.ex = "example";
                 $scope.logout = function (){
-                    console.log("has dado click en logout");
                     delete $window.localStorage.token;
                     $location.path('/login');
                 }
 
               }]
             
-            /*            
-            link: function($scope, element, attrs) {
-                $scope.logout= function() {
-                    console.log('inside click logout');
-                    delete $window.localStorage.token;
-                    $location.path('/login');
-                }
-            }*/
           };
     });
 
@@ -65,18 +53,8 @@
             templateUrl: './templates/customnavbar2.html',
             controller: ['$scope', '$window', '$location', function Customnavbar2Controller($scope, $window, $location) {
                 var vm = this;
-                console.log("inside the customnavbar2 controller");
-                console.log("ocal storage ", $location.path());
-
-                vm.profileButtons = true;
-                console.log("token: " + $window.localStorage.token);
                 
                 $scope.token = $window.localStorage.token;
-                $scope.logout = function (){
-                    console.log("has dado click en logout");
-                    delete $window.localStorage.token;
-                    $location.path('/login');
-                }
 
               }]
           };
@@ -161,7 +139,6 @@
         var vm = this;
         vm.title = "Main";
         vm.polls = [];
-        console.log('in main controller');
         vm.poll = {
             options: [],
             name: '',
@@ -186,47 +163,30 @@
             polls =[];
             $http.get('/api')
             .then(function(response){
-                var dat = response.data;
-                console.log("dat ", dat[0]);
-                
+                var dat = response.data;                
                 vm.polls = dat.polls;
-                vm.users = dat.users;
-
-                
+                vm.users = dat.users;                
                 vm.tableData.polls = vm.polls;
                 vm.tableData.users = vm.users;
                 var pollTable=[];
                 pollTable = vm.polls;
-                //pollTable[0].userName = 'Bruno';
                     
                 for(var d=0; d< vm.polls.length; d++){
-                    //console.log("poll ", vm.polls[d].name);
                     for(var t=0; t< vm.users.length; t++){
-                        //console.log("usuario: " + vm.users[t].name);
                         if(vm.users[t]._id === vm.polls[d].user){
-                            //console.log("el ususario: " + vm.users[t].name + "tiene el poll " + vm.polls[d].name + "en el indice: "+ d);
-                            pollTable[d].userName = vm.users[t].name;
-                                
-                        }
-                       
+                            pollTable[d].userName = vm.users[t].name;                                
+                        }                       
                     }
                 }
-
-                //console.log("vm.pollsTable ", pollTable);
-                
-                vm.tableParams = new NgTableParams({}, { dataset: pollTable});
-                //console.log("vm.tableParams ", vm.tableParams);                
+                vm.tableParams = new NgTableParams({}, { dataset: pollTable});               
             }, function(err){
-                console.log("error en el get");
                 console.log(err);
             })   
         }
                 vm.getAllPolls()
         
         vm.goToThisPoll = function(thisPoll){             
-            console.log("the poll you selected: " , thisPoll);
             var id = thisPoll._id;
-            console.log("id " + id);
             vm.selectedPoll = thisPoll;
             $location.path("/polls/" + id);                      
         }
@@ -275,7 +235,6 @@
                  }, function(err){
                      //vm.error = err.data.errmsg;
                      vm.error = "Sorry, this name is already taken";
-                     console.log("error: ", err); 
                  });
                    
         }
@@ -288,16 +247,8 @@
     function ProfileController($location, $window, jwtHelper, $http){
         var vm = this;
         vm.title = "Profile";
-        console.log("en controller de profile");
         polls = [];
         vm.totalPolls;
-        /*
-        vm.poll = {
-            options: [],
-            name: '',
-            user: id
-        };*/
-
         vm.user = null;
         var token = $window.localStorage.token;
         var payload = jwtHelper.decodeToken(token).data;
@@ -314,7 +265,6 @@
         }
         
         vm.myPolls = function(){
-            console.log('Dentro de ProfileController.vm.myPolls')
             $location.path('/polls');
         }
 
@@ -325,20 +275,15 @@
                  .then(function(response){
                      var dat = response.data;
                      var cont= 0;
-                     //console.log("data "  +dat);
                      for(l=0; l< dat.length; l++){
                          if(dat[l].user === id){
                              cont++;
                             polls.push(dat[l]);
                          }
                      }
-                     //console.log("el id del usuario" , user);
-                     console.log("los polls del ususario son: ", polls);
-                     //vm.polls = response.data;
                      vm.polls = polls;
                      vm.totalPolls = vm.polls.length;
                  }, function(err){
-                     console.log("error en el get");
                      console.log(err);
                  })   
         }
@@ -354,7 +299,6 @@
         if($window.localStorage.token){
             var user = jwtHelper.decodeToken($window.localStorage.token);
             vm.userName = user.data.name
-            console.log("user is ", vm.userName);
             var id = user.data._id;
             polls = [];
             vm.poll = {
@@ -374,7 +318,6 @@
             }
 
             vm.createMyPoll = function(){
-                console.log("vas a crear un poll");
                 vm.create = true;
             }
 
@@ -390,28 +333,21 @@
                      .then(function(response){
                          var dat = response.data;
                          var cont= 0;
-                         //console.log("data "  +dat);
                          for(l=0; l< dat.length; l++){
                              if(dat[l].user === id){
                                  cont++;
                                 polls.push(dat[l]);
                              }
                          }
-                         //console.log("el id del usuario" , user);
-                         console.log("los polls del ususario son: ", polls);
-                         //vm.polls = response.data;
                          vm.polls = polls;
                      }, function(err){
-                         console.log("error en el get");
                          console.log(err);
                      })   
             }
                     vm.getAllPolls()
     
-            vm.addPoll = function(){
-                
+            vm.addPoll = function(){            
                 vm.create = false;
-                console.log("en add new poll");
                 if(!vm.poll){
                     console.log('Invalid data suplied');
                     return;
@@ -420,39 +356,30 @@
                 $http.post('/api/polls', vm.poll)
                      .then(function(response){
                          vm.poll = {};
-                         //vm.poll.options = [];
                          vm.poll.options = [{
                             name: '',
                             votes: 0
                         }];
-                         console.log("EN POST NEW POLL");
                          vm.getAllPolls();
                      }, function(err){
                          vm.poll = {};
                         console.log(err);
                      })
-                     console.log("el poll creado ", vm.poll);
-                      
-                     console.log("los polls del ususario son: ", vm.polls); 
             }
     
             vm.goToThisPoll = function(thisPoll){             
-                console.log("the poll you selected: " , thisPoll);
                 var id = thisPoll._id;
-                console.log("id " + id);
                 vm.selectedPoll = thisPoll;
                 $location.path("/polls/" + id);                      
             }
     
             vm.deleteThisPoll = function(thisPoll){
                 if(confirm("Are you sure you want to delete this Poll?")){
-                    console.log("you want to delete this: " , thisPoll);
                     vm.pollToDelete = thisPoll;
                     vm.pollToDelete.toDelete = true;                  
                     $http.post('/api/polls', vm.pollToDelete)
                         .then(function(response){
                             vm.poll = {};
-                            //vm.poll.options = [];
                             vm.poll.options = [{
                                name: '',
                                votes: 0
@@ -462,20 +389,13 @@
                             vm.poll = {};
                         console.log(err);
                     }) 
-                    
-                   //vm.getAllPolls()
-    
                 }  
-
             }
-        }//fin de si es usuario
-        else{
-            console.log("no es usuario");
-            $location.path('/login');
         }
-        
-
-    }//fin del controlador de polls
+        else{
+            $location.path('/login');
+        }    
+    }
 
     app.controller('PollController', PollController);
 
@@ -485,37 +405,20 @@
         vm.thisPollId = $location.path().slice(7);
         vm.voted = false;
         vm.otherOps = false;
-        //console.log("usuario: ", vm.userName);
-        
-
-        console.log("Entro al controlador del POll");
-        console.log("vm.thisPollId " + vm.thisPollId);
-        //console.log("con este usuario ", user);
-        
         $http.get('/api/polls/' + vm.thisPollId)
             .then(function(response){
-                console.log("response del poll en general ", response);
-                console.log("data del poll: ", response.data[0]);
                 vm.thisPollIs = response.data[0];
                 vm.shareText = "Check out my new poll: '" + vm.thisPollIs.name + "'";
                 $scope.url = 'https://kenyafccvotingapp-kenyaguzmanp.c9users.io/polls/'+ vm.thisPollIs._id;
-                console.log("usuario en el get del poll " , vm.thisPollIs.user);
                 vm.showTheChart();
             }, function(err){
                 console.log(err);
             })
 
-        
-             
-            console.log('vm.thispollis ' , vm.thisPollIs);  
         vm.voteForThis = function(){
-            console.log('you voted for: ' + $scope.selectedOption);
-            //console.log("esta autorizado para votar? ", id);
             if($window.localStorage.token){
-                console.log("puede votar");
                 for(var j=0; j<vm.thisPollIs.options.length; j++){
                     if(vm.thisPollIs.options[j].name === $scope.selectedOption && vm.voted === false){
-                        console.log("indice donde esta la opcion seleccionada es " + j);
                         vm.thisPollIs.options[j].votes +=1;
                         vm.voted = "true";
                     }
@@ -572,27 +475,18 @@
         }
         
         vm.addOptionToThisPoll = function(optionName){
-            console.log("quieres agregar otra opcion: ", optionName);
-            console.log("quieres modificar el poll ", vm.thisPollId);
-            console.log("con la info que es: ", vm.thisPollIs);
             vm.newOption = {
                 name: optionName,
                 votes: 0
             };
             vm.addInput = true;
-            console.log("new option: ", vm.newOption);
             vm.thisPollIs.options.push(vm.newOption);
-                
-            console.log("ahora el nuevo poll es ", vm.thisPollIs);
-            console.log("a ver ID", vm.thisPollId);
+ 
             $http.post('/api/polls/' + vm.thisPollId, vm.thisPollIs)
                  .then(function(response){
-                        console.log("response del post de addOption", response);
-                        //$window.localStorage.token = response.data;
-                        //vm.thisPollIs = {};
-                        //vm.getAllPolls();
+                        
                   }, function(err){
-                        //vm.poll = {};
+                        
                     console.log(err);
                  })     
         }
