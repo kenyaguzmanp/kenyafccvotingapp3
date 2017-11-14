@@ -122,6 +122,27 @@ router.post('/verify', function(request, response){
      }
  });
 
+ router.get('/profile', authenticate, function(request, response){
+    console.log("ENTRO A PROFILE");
+    var pollsToSend =[];
+    var pollsUser=[];
+    if(response.req.headers.authorization){
+        console.log("autorizado");
+    }
+
+    Poll.find({}, function(err, polls){
+        if(err){
+            return response.status(400).send(err)
+        }
+        if(polls.length < 1){
+            return response.status(400).send('No polls added yet')
+        }
+        pollsToSend = polls;
+        return response.status(200).send(polls)
+    }) 
+});
+
+
 //Get all the polls
 router.get('/polls', authenticate, function(request, response){
     console.log("ENTRO A POLLS");

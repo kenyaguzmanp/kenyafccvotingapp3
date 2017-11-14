@@ -62,7 +62,23 @@
             restrict: 'E',
             transclude: true,
             scope: {},            
-            templateUrl: './templates/customnavbar2.html'
+            templateUrl: './templates/customnavbar2.html',
+            controller: ['$scope', '$window', '$location', function Customnavbar2Controller($scope, $window, $location) {
+                var vm = this;
+                console.log("inside the customnavbar2 controller");
+                console.log("ocal storage ", $location.path());
+
+                vm.profileButtons = true;
+                console.log("token: " + $window.localStorage.token);
+                
+                $scope.token = $window.localStorage.token;
+                $scope.logout = function (){
+                    console.log("has dado click en logout");
+                    delete $window.localStorage.token;
+                    $location.path('/login');
+                }
+
+              }]
           };
     });
 
@@ -269,10 +285,18 @@
 
     app.controller('ProfileController', ProfileController);
 
-    function ProfileController($location, $window, jwtHelper){
+    function ProfileController($location, $window, jwtHelper, $http){
         var vm = this;
         vm.title = "Profile";
         console.log("en controller de profile");
+        polls = [];
+        vm.totalPolls;
+        /*
+        vm.poll = {
+            options: [],
+            name: '',
+            user: id
+        };*/
 
         vm.user = null;
         var token = $window.localStorage.token;
@@ -280,6 +304,7 @@
         if(payload){
             vm.user = payload;
         }
+        var id = vm.user._id;
         
         vm.logOut = function(){
             console.log("logout");
@@ -292,6 +317,33 @@
             console.log('Dentro de ProfileController.vm.myPolls')
             $location.path('/polls');
         }
+
+
+        vm.getAllPolls = function(){
+            polls =[];
+            $http.get('/api/polls')
+                 .then(function(response){
+                     var dat = response.data;
+                     var cont= 0;
+                     //console.log("data "  +dat);
+                     for(l=0; l< dat.length; l++){
+                         if(dat[l].user === id){
+                             cont++;
+                            polls.push(dat[l]);
+                         }
+                     }
+                     //console.log("el id del usuario" , user);
+                     console.log("los polls del ususario son: ", polls);
+                     //vm.polls = response.data;
+                     vm.polls = polls;
+                     vm.totalPolls = vm.polls.length;
+                 }, function(err){
+                     console.log("error en el get");
+                     console.log(err);
+                 })   
+        }
+                vm.getAllPolls()
+
     }
 
     app.controller('PollsController', PollsController);

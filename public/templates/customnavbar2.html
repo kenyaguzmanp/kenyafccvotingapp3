@@ -11,8 +11,10 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/login">Login</a></li>
-          <li><a href="/register">Register</a></li>
+          <li><a href="/login" ng-hide="token !== undefined">Login</a></li>
+          <li><a href="/profile" ng-show="token !== undefined">Profile</a></li>
+          <li><a href="/polls" ng-show="token !== undefined">Polls</a></li>
+          <li><a href="/register" ng-hide="token !== undefined">Register</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
