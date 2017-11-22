@@ -463,7 +463,7 @@
             }
 
         }
-       // vm.showTheChart();
+       
 
         vm.addOtherOptions = function (){
             console.log("añadir oras opciones");
