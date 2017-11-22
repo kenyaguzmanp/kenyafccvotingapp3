@@ -2,7 +2,7 @@
 var db = process.env.MONGODB_URI;
 
 //create a port for the server to listen on
-var port =  process.env.PORT;
+var port =  process.env.PORT || 8000;
 
 //load router
 var router = require('./routes/api');
